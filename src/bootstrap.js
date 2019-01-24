@@ -1,4 +1,5 @@
-const { FactomCli, isValidPrivateAddress } = require('factom');
+const factomjs = require('factom');
+const { FactomCli, isValidPrivateAddress } = factomjs;
 const fs = require('fs');
 const execSync = require('child_process').execSync;
 
@@ -48,7 +49,7 @@ async function userBootstrap(config, cli) {
     }
     if (config.scriptjs) {
         const f = require(`${config.scriptjs}`);
-        await f(cli);
+        await f(cli, factomjs);
     }
 }
 
