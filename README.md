@@ -25,7 +25,7 @@ $ factom-dev-stack stop
 ### wrap
 
 ```bash
-$ factom-dev-stack wrap -c examples/.factomd-ds.json "factom-cli balance FA2jK2HcLnRdS94dEcU27rF3meoJfpUcZPSinpb7AwQvPRY6RL1Q"
+$ factom-dev-stack wrap -c examples/.factomd-ds.json "factom-cli get chainhead 954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4"
 ```
 
 ## Configuration file
@@ -36,11 +36,13 @@ $ factom-dev-stack wrap -c examples/.factomd-ds.json "factom-cli balance FA2jK2H
     "walletdImage": "factominc/factom-walletd:v2.2.14-alpine",
     "factomdConf": "factomd.conf",
     "bootstrap": {
-        "script": "my-bootstrap-script.sh",
-        "scriptjs": "my-bootstrap-script.js",
+        "wallet": "wallet.json",
+        "transactions": "",
         "chains": "",
         "entries": "",
-        "transactions": ""
+        "script": "my-bootstrap-script.sh",
+        "scriptjs": "my-bootstrap-script.js",
+        "waitNewBlock": true
     }
 }
 ```

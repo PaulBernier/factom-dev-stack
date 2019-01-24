@@ -23,6 +23,8 @@ exports.handler = async function (argv) {
 
     try {
         await run(argv.config);
+        console.error();
+        console.error('User command output:');
         console.log(execSync(argv.command).toString());
     } catch (e) {
         console.error(chalk.red(e.message));

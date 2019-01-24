@@ -4,6 +4,7 @@ const fs = require('fs');
 const execSync = require('child_process').execSync;
 
 async function bootstrap(config) {
+    console.error();
     console.error('Bootstrapping...');
 
     const cli = new FactomCli();
@@ -59,9 +60,11 @@ async function userBootstrap(config, cli) {
 
     // Scripts
     if (config.script) {
+        console.error('Running bootstrap script...');
         execSync(`${config.script}`);
     }
     if (config.scriptjs) {
+        console.error('Running bootstrap JavaScript script...');
         const f = require(`${config.scriptjs}`);
         await f(cli, factomjs);
     }

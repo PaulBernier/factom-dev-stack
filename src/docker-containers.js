@@ -10,12 +10,7 @@ async function startContainers(config) {
 
     const commands = [buildFactomdCommand(config), buildWalletdCommand(config)];
 
-    const result = await Promise.all(commands.map(c => exec(c)));
-    console.error(`Factomd container: ${result[0].stdout}`);
-
-    if (result.length > 1) {
-        console.error(`Walletd container: ${result[1].stdout}`);
-    }
+    await Promise.all(commands.map(c => exec(c)));
 }
 
 function buildFactomdCommand(config) {
