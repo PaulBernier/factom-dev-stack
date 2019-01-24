@@ -11,6 +11,9 @@ async function bootstrap(config) {
     await fdsBootStrap(cli);
     if (typeof config === 'object') {
         await userBootstrap(config, cli);
+        if (config.waitNewBlock) {
+            await waitNewBlock(cli);
+        }
     }
 }
 
@@ -18,7 +21,18 @@ async function fdsBootStrap(cli) {
     await cli.walletdApi('import-addresses', { addresses: [{ secret: 'Fs3E9gV6DXsYzf7Fqx1fVBQPQXV695eP3k5XbmHEZVRLkMdD9qCK' }] });
 }
 
+async function waitNewBlock(cli) {
+    console.error('Waiting for a new block before continuing...');
+    const referenceHeight = await cli.getHeights().then(r => r.directoryBlockHeight);
+    let currentHeight = referenceHeight;
+    while (currentHeight <= referenceHeight) {
+        await sleep(1000);
+        currentHeight = await cli.getHeights().then(r => r.directoryBlockHeight);
+    }
+}
+
 async function waitFactomdApiReady(cli) {
+    console.error('Waiting for API to be ready...');
     while (await cli.factomdApi('properties').then(() => false).catch(() => true)) {
         await sleep(1000);
     }

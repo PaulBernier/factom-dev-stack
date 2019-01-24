@@ -6,6 +6,7 @@
         "chains": "",
         "entries": "",
         "script": "my-bootstrap-script.sh",
-        "scriptjs": "my-bootstrap-script.js"
+        "scriptjs": "my-bootstrap-script.js",
+        "waitNewBlock": true
     }
 }
