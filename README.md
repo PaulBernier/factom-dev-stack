@@ -10,16 +10,22 @@ Factom Dev Stack requires `docker` to be installed.
 
 ## Commands
 
-### Start
+### start
 
 ```bash
 $ factom-dev-stack start -c examples/.factomd-ds.json
 ```
 
-### Stop
+### stop
 
 ```bash
 $ factom-dev-stack stop
+```
+
+### wrap
+
+```bash
+$ factom-dev-stack wrap -c examples/.factomd-ds.json "factom-cli balance FA2jK2HcLnRdS94dEcU27rF3meoJfpUcZPSinpb7AwQvPRY6RL1Q"
 ```
 
 ## Configuration file
