@@ -22,11 +22,15 @@ function resolveConfigPaths(configFilePath, config) {
         config.factomdConf = path.resolve(dirname, config.factomdConf);
     }
 
-    if (config.bootstrap && config.bootstrap.script) {
-        config.bootstrap.script = path.resolve(dirname, config.bootstrap.script);
-    }
-    if (config.bootstrap && config.bootstrap.scriptjs) {
-        config.bootstrap.scriptjs = path.resolve(dirname, config.bootstrap.scriptjs);
+    resolve(config, 'factomdConf', dirname);
+    resolve(config.bootstrap, 'script', dirname);
+    resolve(config.bootstrap, 'scriptjs', dirname);
+    resolve(config.bootstrap, 'wallet', dirname);
+}
+
+function resolve(config, attribute, dirname) {
+    if (config && config[attribute]) {
+        config[attribute] = path.resolve(dirname, config[attribute]);
     }
 }
 

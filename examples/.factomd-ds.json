@@ -1,10 +1,11 @@
 {
     "factomdConf": "factomd.conf",
     "bootstrap": {
-        "script": "my-bootstrap-script.sh",
-        "scriptjs": "my-bootstrap-script.js",
+        "wallet": "wallet.json",
+        "transactions": "",
         "chains": "",
         "entries": "",
-        "transactions": ""
+        "script": "my-bootstrap-script.sh",
+        "scriptjs": "my-bootstrap-script.js"
     }
 }
