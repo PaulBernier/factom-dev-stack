@@ -11,5 +11,6 @@ exports.handler = async function () {
         await stopContainers();
     } catch (e) {
         console.error(chalk.red(e.message));
+        process.exit(1);
     }
 };

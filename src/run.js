@@ -1,19 +1,13 @@
 const { getConfig } = require('./config-handler');
-const { startContainers, stopContainers } = require('./docker-containers');
+const { startContainers } = require('./docker-containers');
 const { bootstrap } = require('./bootstrap');
-const chalk = require('chalk');
 
 async function run(configPath) {
 
     const config = await getConfig(configPath);
 
-    try {
-        await startContainers(config);
-        await bootstrap(config.bootstrap);
-    } catch (e) {
-        console.error(chalk.red(e.message));
-        await stopContainers();
-    }
+    await startContainers(config);
+    await bootstrap(config.bootstrap);
 }
 
 

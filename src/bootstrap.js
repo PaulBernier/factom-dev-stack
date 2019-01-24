@@ -61,11 +61,11 @@ async function userBootstrap(config, cli) {
     // Scripts
     if (config.script) {
         console.error('Running bootstrap script...');
-        execSync(`${config.script}`);
+        execSync(config.script, { stdio: 'inherit' });
     }
     if (config.scriptjs) {
         console.error('Running bootstrap JavaScript script...');
-        const f = require(`${config.scriptjs}`);
+        const f = require(config.scriptjs);
         await f(cli, factomjs);
     }
 }

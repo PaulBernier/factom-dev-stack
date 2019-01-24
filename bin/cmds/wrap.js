@@ -21,15 +21,22 @@ exports.builder = function (yargs) {
 
 exports.handler = async function (argv) {
 
+    let status = 0;
     try {
         await run(argv.config);
         console.error();
-        console.error('User command output:');
-        console.log(execSync(argv.command).toString());
+        console.error('Running user command...');
+        execSync(argv.command, { stdio: 'inherit' });
     } catch (e) {
         console.error(chalk.red(e.message));
+        if (e.stdout) {
+            console.log(e.stdout.toString());
+        }
+        status = e.status || 1;
     } finally {
         await stopContainers();
     }
+    process.exit(status);
+
 };
 
