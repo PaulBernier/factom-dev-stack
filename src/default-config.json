@@ -1,4 +1,4 @@
 {
-    "factomdImage": "factominc/factomd:v6.1.0-alpine",
-    "walletdImage": "factominc/factom-walletd:v2.2.14-alpine"
+    "factomdImage": "factominc/factomd:master-alpine",
+    "walletdImage": "factominc/factom-walletd:alpine"
 }
