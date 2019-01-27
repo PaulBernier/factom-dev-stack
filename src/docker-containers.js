@@ -29,7 +29,7 @@ function buildFactomdCommand(config) {
 }
 
 function buildWalletdCommand(config) {
-    let cmd = `docker run -d --rm --name "${WALLETD_CONTAINER_NAME}" -p "8089:8089" factominc/factom-walletd:v2.2.14-alpine `;
+    let cmd = `docker run -d --rm --name "${WALLETD_CONTAINER_NAME}" -p "8089:8089" `;
     cmd += `${config.walletdImage}`;
     return cmd;
 }
