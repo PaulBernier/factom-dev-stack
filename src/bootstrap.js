@@ -75,7 +75,7 @@ async function bootstrapWallet(cli, bootstrapData) {
         const data = typeof bootstrapData === 'string' ? JSON.parse(fs.readFileSync(bootstrapData)) : bootstrapData;
         if (Array.isArray(data)) {
             const privateAddresses = data.filter(isValidPrivateAddress).map(sec => ({ secret: sec }));
-            console.log(await cli.walletdApi('import-addresses', { addresses: privateAddresses }));
+            await cli.walletdApi('import-addresses', { addresses: privateAddresses });
         }
     } catch (e) {
         console.error(`Failed to bootstrap wallet: ${e.message}`);
