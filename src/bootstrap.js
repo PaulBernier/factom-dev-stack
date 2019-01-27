@@ -4,6 +4,7 @@ const fs = require('fs');
 const execSync = require('child_process').execSync;
 
 async function bootstrap(config) {
+    const env = {};
     console.error();
     console.error('Bootstrapping...');
 
@@ -11,11 +12,13 @@ async function bootstrap(config) {
     await waitFactomdApiReady(cli);
     await fdsBootStrap(cli);
     if (typeof config === 'object') {
-        await userBootstrap(config, cli);
+        Object.assign(env, await userBootstrap(config, cli));
         if (config.waitNewBlock) {
             await waitNewBlock(cli);
         }
     }
+
+    return env;
 }
 
 async function fdsBootStrap(cli) {
@@ -44,6 +47,7 @@ function sleep(milliseconds) {
 }
 
 async function userBootstrap(config, cli) {
+    const env = {};
     // Bootstrap files
     if (config.wallet) {
         await bootstrapWallet(cli, config.wallet);
@@ -66,8 +70,10 @@ async function userBootstrap(config, cli) {
     if (config.scriptjs) {
         console.error('Running bootstrap JavaScript script...');
         const f = require(config.scriptjs);
-        await f(cli, factomjs);
+        Object.assign(env, await f(cli, factomjs));
     }
+
+    return env;
 }
 
 async function bootstrapWallet(cli, filePath) {

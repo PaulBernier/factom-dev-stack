@@ -7,7 +7,8 @@ async function run(configPath) {
     const config = await getConfig(configPath);
 
     await startContainers(config);
-    await bootstrap(config.bootstrap);
+    const env = await bootstrap(config.bootstrap);
+    return env;
 }
 
 

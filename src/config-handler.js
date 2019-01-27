@@ -29,7 +29,7 @@ function resolveConfigPaths(configFilePath, config) {
 }
 
 function resolve(config, attribute, dirname) {
-    if (config && config[attribute]) {
+    if (config && typeof config[attribute] === 'string') {
         config[attribute] = path.resolve(dirname, config[attribute]);
     }
 }

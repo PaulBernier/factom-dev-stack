@@ -6,3 +6,4 @@ yargs.strict()
     .commandDir('cmds')
     .demandCommand(1)
     .argv;
+    

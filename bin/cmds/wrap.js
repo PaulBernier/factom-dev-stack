@@ -23,10 +23,12 @@ exports.handler = async function (argv) {
 
     let status = 0;
     try {
-        await run(argv.config);
+        const bootstrapEnv = await run(argv.config);
         console.error();
         console.error('Running user command...');
-        execSync(argv.command, { stdio: 'inherit' });
+
+        const env = Object.assign({ ...process.env }, bootstrapEnv);
+        execSync(argv.command, { stdio: 'inherit', env });
     } catch (e) {
         console.error(chalk.red(e.message));
         if (e.stdout) {
@@ -37,6 +39,5 @@ exports.handler = async function (argv) {
         await stopContainers();
     }
     process.exit(status);
-
 };
 
