@@ -36,10 +36,7 @@ $ factom-dev-stack wrap -c examples/.factomd-ds.json "factom-cli get chainhead 9
     "walletdImage": "factominc/factom-walletd:v2.2.14-alpine",
     "factomdConf": "factomd.conf",
     "bootstrap": {
-        "wallet": "wallet.json",
-        "transactions": "",
-        "chains": "",
-        "entries": "",
+        "wallet": "wallet.json" OR ["Es4D1XXGBBJcWea54xDLMVYgobHzciXKfPSxoZNdsbdjxJftPM6Y"],
         "script": "my-bootstrap-script.sh",
         "scriptjs": "my-bootstrap-script.js",
         "waitNewBlock": true

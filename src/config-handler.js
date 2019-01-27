@@ -9,7 +9,11 @@ async function getConfig(configFilePath) {
         userConfig = JSON.parse(fs.readFileSync(configFilePath));
         resolveConfigPaths(configFilePath, userConfig);
     } catch (e) {
-        // 
+        if (e.code === 'ENOENT') {
+            console.error('No factom-dev-stack config file found.');
+        } else {
+            console.error(e);
+        }
     }
 
     return Object.assign({ ...DEFAULT_CONFIG }, userConfig);

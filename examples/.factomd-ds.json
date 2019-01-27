@@ -2,9 +2,6 @@
     "factomdConf": "factomd.conf",
     "bootstrap": {
         "wallet": "wallet.json",
-        "transactions": "",
-        "chains": "",
-        "entries": "",
         "script": "my-bootstrap-script.sh",
         "scriptjs": "my-bootstrap-script.js",
         "waitNewBlock": true

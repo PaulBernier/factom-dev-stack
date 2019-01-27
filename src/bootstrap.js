@@ -52,15 +52,6 @@ async function userBootstrap(config, cli) {
     if (config.wallet) {
         await bootstrapWallet(cli, config.wallet);
     }
-    if (config.transactions) {
-        await bootstrapTransactions(config.transactions);
-    }
-    if (config.chains) {
-        await bootstrapChains(config.chains);
-    }
-    if (config.entries) {
-        await bootstrapEntries(config.entries);
-    }
 
     // Scripts
     if (config.script) {
@@ -76,28 +67,16 @@ async function userBootstrap(config, cli) {
     return env;
 }
 
-async function bootstrapWallet(cli, filePath) {
+async function bootstrapWallet(cli, bootstrapData) {
     try {
-        const data = JSON.parse(fs.readFileSync(filePath));
+        const data = typeof bootstrapData === 'string' ? JSON.parse(fs.readFileSync(bootstrapData)) : bootstrapData;
         if (Array.isArray(data)) {
             const privateAddresses = data.filter(isValidPrivateAddress).map(sec => ({ secret: sec }));
-            await cli.walletdApi('import-addresses', { addresses: privateAddresses });
+            console.log(await cli.walletdApi('import-addresses', { addresses: privateAddresses }));
         }
     } catch (e) {
         console.error(`Failed to bootstrap wallet: ${e.message}`);
     }
-}
-
-async function bootstrapChains() {
-    // TODO
-}
-
-async function bootstrapEntries() {
-    // TODO
-}
-
-async function bootstrapTransactions() {
-    // TODO
 }
 
 module.exports = {
