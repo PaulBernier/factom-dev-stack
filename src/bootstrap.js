@@ -61,7 +61,10 @@ async function userBootstrap(config, cli) {
     if (config.scriptjs) {
         console.error('Running bootstrap JavaScript script...');
         const f = require(config.scriptjs);
-        Object.assign(env, await f(cli, factomjs));
+        const returned = await f(cli, factomjs);
+        if (typeof returned === 'object') {
+            Object.assign(env, returned);
+        }
     }
 
     return env;
