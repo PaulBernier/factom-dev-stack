@@ -34,7 +34,7 @@ You can then use `factom-dev-stack` in your NPM test command for instance:
 Start all instances then run the bootstrapping.
 
 ```bash
-$ factom-dev-stack start -c examples/.factomd-ds.json
+$ factom-dev-stack start -c examples/.factomds.json
 ```
 
 ### stop
@@ -50,7 +50,7 @@ $ factom-dev-stack stop
 Start the instances then bootstrap then run the user command then stop the instances. Intended to use for convenient integration testing.
 
 ```bash
-$ factom-dev-stack wrap -c examples/.factomd-ds.json "factom-cli get chainhead 954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4"
+$ factom-dev-stack wrap -c examples/.factomds.json "factom-cli get chainhead 954d5a49fd70d9b8bcdb35d252267829957f7ef7fa6c74f88419bdc5e82209f4"
 ```
 
 ## Configuration file format

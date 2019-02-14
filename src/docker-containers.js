@@ -11,6 +11,7 @@ async function startContainers(config) {
     const commands = [buildFactomdCommand(config), buildWalletdCommand(config)];
 
     await Promise.all(commands.map(c => exec(c)));
+    console.error('factomd and factom-walletd instances running');
 }
 
 function buildFactomdCommand(config) {
