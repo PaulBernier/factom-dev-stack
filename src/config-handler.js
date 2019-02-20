@@ -4,10 +4,10 @@ const fs = require('fs'),
 
 const DEFAULT_CONFIG = require('./default-config.json');
 
-async function getConfig(configFilePath) {
-
+async function getConfig(configPath) {
     let userConfig = {};
     try {
+        const configFilePath = getConfigFilePath(configPath);
         userConfig = JSON.parse(fs.readFileSync(configFilePath));
         resolveConfigPaths(configFilePath, userConfig);
     } catch (e) {
@@ -19,6 +19,14 @@ async function getConfig(configFilePath) {
     }
 
     return merge(DEFAULT_CONFIG, userConfig);
+}
+
+function getConfigFilePath(configFilePath) {
+    if (fs.statSync(configFilePath).isDirectory()) {
+        return path.join(configFilePath, '.factomds.json');
+    } else {
+        return configFilePath;
+    }
 }
 
 function resolveConfigPaths(configFilePath, config) {

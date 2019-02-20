@@ -13,7 +13,8 @@ exports.builder = function (yargs) {
         alias: 'c',
         type: 'string',
         describe: 'Path to Factom dev stack config file',
-        default: '.factomds.json'
+        default: '.'
+
     });
 };
 
