@@ -1,5 +1,7 @@
 const fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+    merge = require('deepmerge');
+
 const DEFAULT_CONFIG = require('./default-config.json');
 
 async function getConfig(configFilePath) {
@@ -16,17 +18,13 @@ async function getConfig(configFilePath) {
         }
     }
 
-    return Object.assign({ ...DEFAULT_CONFIG }, userConfig);
+    return merge(DEFAULT_CONFIG, userConfig);
 }
 
 function resolveConfigPaths(configFilePath, config) {
     const dirname = path.dirname(configFilePath);
 
-    if (config.factomdConf) {
-        config.factomdConf = path.resolve(dirname, config.factomdConf);
-    }
-
-    resolve(config, 'factomdConf', dirname);
+    resolve(config.factomd, 'conf', dirname);
     resolve(config.bootstrap, 'script', dirname);
     resolve(config.bootstrap, 'scriptjs', dirname);
     resolve(config.bootstrap, 'wallet', dirname);

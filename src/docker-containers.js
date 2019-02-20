@@ -8,30 +8,29 @@ const WALLETD_CONTAINER_NAME = 'fds-walletd';
 async function startContainers(config) {
     console.error('Starting containers...');
 
-    const commands = [buildFactomdCommand(config), buildWalletdCommand(config)];
+    const commands = [buildFactomdCommand(config.factomd), buildWalletdCommand(config.walletd)];
 
     await Promise.all(commands.map(c => exec(c)));
     console.error('factomd and factom-walletd instances running');
 }
 
-function buildFactomdCommand(config) {
+function buildFactomdCommand(factomd) {
     let cmd = `docker run -d --rm --name "${FACTOMD_CONTAINER_NAME}" -p "8088:8088" -p "8090:8090" `;
 
-    if (config.factomdConf) {
-        cmd += ` -v ${path.dirname(config.factomdConf)}:/factomd-config `;
+    if (factomd.conf) {
+        cmd += ` -v ${path.dirname(factomd.conf)}:/factomd-config `;
     }
 
-    cmd += `${config.factomdImage} -startdelay=0 -faulttimeout=0 -network=LOCAL`;
-    if (config.factomdConf) {
-        cmd += ` -config /factomd-config/${path.basename(config.factomdConf)}`;
+    cmd += `${factomd.image} -startdelay=0 -faulttimeout=0 -network=LOCAL`;
+    if (factomd.conf) {
+        cmd += ` -config /factomd-config/${path.basename(factomd.conf)}`;
     }
 
     return cmd;
 }
 
-function buildWalletdCommand(config) {
-    let cmd = `docker run -d --rm --name "${WALLETD_CONTAINER_NAME}" -p "8089:8089" `;
-    cmd += `${config.walletdImage}`;
+function buildWalletdCommand(walletd) {
+    let cmd = `docker run -d --rm --name "${WALLETD_CONTAINER_NAME}" -p "8089:8089" ${walletd.image}`;
     return cmd;
 }
 

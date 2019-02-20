@@ -5,7 +5,6 @@ const { bootstrap } = require('./bootstrap');
 async function run(configPath) {
 
     const config = await getConfig(configPath);
-
     await startContainers(config);
     const env = await bootstrap(config.bootstrap);
     return env;

@@ -57,9 +57,13 @@ $ factom-dev-stack wrap -c examples/.factomds.json "factom-cli get chainhead 954
 
 ```javascript
 {
-    "factomdImage": "factominc/factomd:v6.1.0-alpine",
-    "walletdImage": "factominc/factom-walletd:v2.2.14-alpine",
-    "factomdConf": "factomd.conf",
+    "factomd": {
+        "image": "factominc/factomd:v6.1.0-alpine",
+        "conf": "factomd.conf"
+    },
+    "walletd": {
+        "image": "factominc/factom-walletd:v2.2.14-alpine"
+    },
     "bootstrap": {
         "wallet": "wallet.json" OR ["Es4D1XXGBBJcWea54xDLMVYgobHzciXKfPSxoZNdsbdjxJftPM6Y"],
         "script": "my-bootstrap-script.sh",

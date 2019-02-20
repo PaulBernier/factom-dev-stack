@@ -1,5 +1,7 @@
 {
-    "factomdConf": "factomd.conf",
+    "factomd": {
+        "conf": "factomd.conf"
+    },
     "bootstrap": {
         "wallet": "wallet.json",
         "script": "my-bootstrap-script.sh",

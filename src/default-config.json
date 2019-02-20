@@ -1,4 +1,8 @@
 {
-    "factomdImage": "factominc/factomd:master-alpine",
-    "walletdImage": "factominc/factom-walletd:alpine"
+    "factomd": {
+        "image": "factominc/factomd:master-alpine"
+    },
+    "walletd": {
+        "image": "factominc/factom-walletd:alpine"
+    }
 }
