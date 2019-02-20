@@ -25,6 +25,9 @@ function buildFactomdCommand(factomd) {
     if (factomd.conf) {
         cmd += ` -config /factomd-config/${path.basename(factomd.conf)}`;
     }
+    if (factomd.blockTime) {
+        cmd += ` -blktime=${factomd.blockTime}`;
+    }
 
     return cmd;
 }

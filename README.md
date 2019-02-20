@@ -59,7 +59,8 @@ $ factom-dev-stack wrap -c examples/.factomds.json "factom-cli get chainhead 954
 {
     "factomd": {
         "image": "factominc/factomd:v6.1.0-alpine",
-        "conf": "factomd.conf"
+        "conf": "factomd.conf",
+        "blockTime": 4
     },
     "walletd": {
         "image": "factominc/factom-walletd:v2.2.14-alpine"

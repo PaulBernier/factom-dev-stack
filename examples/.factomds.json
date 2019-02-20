@@ -1,6 +1,7 @@
 {
     "factomd": {
-        "conf": "factomd.conf"
+        "conf": "factomd.conf",
+        "blockTime": 4
     },
     "bootstrap": {
         "wallet": "wallet.json",

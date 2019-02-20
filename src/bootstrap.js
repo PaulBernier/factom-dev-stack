@@ -57,6 +57,7 @@ async function userBootstrap(config, cli) {
     if (config.script) {
         console.error('Running bootstrap script...');
         execSync(config.script, { stdio: 'inherit' });
+        console.error();
     }
     if (config.scriptjs) {
         console.error('Running bootstrap JavaScript script...');
@@ -65,6 +66,7 @@ async function userBootstrap(config, cli) {
         if (typeof returned === 'object') {
             Object.assign(env, returned);
         }
+        console.error();
     }
 
     return env;
