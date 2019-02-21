@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-const { run } = require('../../src/run');
-const { stopContainers } = require('../../src/docker-containers');
+const { run, stop } = require('../../src/run');
 const execSync = require('child_process').execSync;
 const chalk = require('chalk');
 
@@ -29,8 +28,7 @@ exports.handler = async function (argv) {
     try {
         const bootstrapEnv = await run({ configPath: argv.config, flagConfig: flagConfig(argv) });
 
-        console.error();
-        console.error('Running user command...');
+        console.error(chalk.yellow('Running user command:\n'));
 
         const env = Object.assign({ ...process.env }, bootstrapEnv);
         execSync(argv.command, { stdio: 'inherit', env });
@@ -41,7 +39,7 @@ exports.handler = async function (argv) {
         }
         status = e.status || 1;
     } finally {
-        await stopContainers();
+        await stop();
     }
     process.exit(status);
 };

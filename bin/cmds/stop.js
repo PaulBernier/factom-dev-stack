@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { stopContainers } = require('../../src/docker-containers');
+const { stop } = require('../../src/run');
 const chalk = require('chalk');
 
 exports.command = 'stop';
@@ -8,7 +8,7 @@ exports.describe = 'Stop Factom dev stack.';
 
 exports.handler = async function () {
     try {
-        await stopContainers();
+        await stop();
     } catch (e) {
         console.error(chalk.red(e.message));
         process.exit(1);

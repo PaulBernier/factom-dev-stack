@@ -1,13 +1,13 @@
 const { promisify } = require('util');
 const exec = promisify(require('child_process').exec);
 const path = require('path');
+const chalk = require('chalk');
 
 const FACTOMD_CONTAINER_NAME = 'fds-factomd';
 const WALLETD_CONTAINER_NAME = 'fds-walletd';
 
 async function startContainers(config) {
-    console.error('Starting containers...');
-
+    console.error(chalk.yellow('\nStarting services...'));
 
     const persistVolume = await getPersistVolume(config);
     const commands = [
@@ -16,7 +16,8 @@ async function startContainers(config) {
     ];
 
     await Promise.all(commands.map(c => exec(c)));
-    console.error('factomd and factom-walletd instances running');
+    console.error(`* factomd instance started (${chalk.blue(config.factomd.image)})`);
+    console.error(`* factom-walletd instance started (${chalk.blue(config.walletd.image)})`);
 }
 
 async function getPersistVolume(config) {
@@ -58,7 +59,7 @@ function buildWalletdCommand(walletd, persistVolume) {
 }
 
 async function stopContainers() {
-    console.error('Stopping containers...');
+    console.error(chalk.yellow('\nStopping all services...'));
     try {
         await Promise.all([exec('docker stop fds-factomd'), exec('docker stop fds-walletd')]);
     } catch (e) {

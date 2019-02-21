@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-const { run } = require('../../src/run');
-const { stopContainers } = require('../../src/docker-containers');
+const { run, stop } = require('../../src/run');
 
 const chalk = require('chalk');
 
@@ -27,7 +26,7 @@ exports.handler = async function (argv) {
         await run({ configPath: argv.config, flagConfig: flagConfig(argv) });
     } catch (e) {
         console.error(chalk.red(e.message));
-        await stopContainers();
+        await stop();
         process.exit(1);
     }
 };

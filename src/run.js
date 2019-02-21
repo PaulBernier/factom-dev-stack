@@ -1,8 +1,9 @@
 const { getConfig } = require('./config-handler');
-const { startContainers } = require('./docker-containers');
+const { startContainers, stopContainers } = require('./docker-containers');
 const { bootstrap } = require('./bootstrap');
 const { promisify } = require('util');
 const exec = promisify(require('child_process').exec);
+const chalk = require('chalk');
 
 async function run(configs) {
 
@@ -10,12 +11,18 @@ async function run(configs) {
     const sbs = await shouldBootstrap(config);
     await startContainers(config);
 
+    let env = {};
     if (sbs) {
-        const env = await bootstrap(config.bootstrap);
-        return env;
-    } else {
-        return {};
+        env = await bootstrap(config.bootstrap);
     }
+
+    console.error(chalk.green('\nFactom Dev Start running.\n'));
+    return env;
+}
+
+async function stop() {
+    await stopContainers();
+    console.error(chalk.green('\nFactom Dev Start stopped.\n'));
 }
 
 async function shouldBootstrap(config) {
@@ -29,5 +36,6 @@ async function shouldBootstrap(config) {
 }
 
 module.exports = {
-    run
+    run,
+    stop
 };

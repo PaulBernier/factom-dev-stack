@@ -2,12 +2,12 @@ const factomjs = require('factom');
 const { FactomCli, isValidPrivateAddress } = factomjs;
 const fs = require('fs');
 const execSync = require('child_process').execSync;
+const chalk = require('chalk');
 
 async function bootstrap(config) {
-    const env = {};
-    console.error();
-    console.error('Bootstrapping...');
+    console.error(chalk.yellow('\nBootstrapping...'));
 
+    const env = {};
     const cli = new FactomCli();
     await waitFactomdApiReady(cli);
     await fdsBootStrap(cli);
@@ -26,7 +26,7 @@ async function fdsBootStrap(cli) {
 }
 
 async function waitNewBlock(cli) {
-    console.error('Waiting for a new block before continuing...');
+    console.error('* Waiting for a new block before continuing...');
     const referenceHeight = await cli.getHeights().then(r => r.directoryBlockHeight);
     let currentHeight = referenceHeight;
     while (currentHeight <= referenceHeight) {
@@ -36,7 +36,7 @@ async function waitNewBlock(cli) {
 }
 
 async function waitFactomdApiReady(cli) {
-    console.error('Waiting for API to be ready...');
+    console.error('* Waiting for APIs to be ready...');
     while (await cli.factomdApi('properties').then(() => false).catch(() => true)) {
         await sleep(1000);
     }
@@ -55,12 +55,12 @@ async function userBootstrap(config, cli) {
 
     // Scripts
     if (config.script) {
-        console.error('Running bootstrap script...');
+        console.error('* Running bootstrap script:\n');
         execSync(config.script, { stdio: 'inherit' });
-        console.error();
+        console.error('\n');
     }
     if (config.scriptjs) {
-        console.error('Running bootstrap JavaScript script...');
+        console.error('* Running bootstrap JavaScript script:\n');
         const f = require(config.scriptjs);
         const returned = await f(cli, factomjs);
         if (typeof returned === 'object') {
@@ -80,7 +80,7 @@ async function bootstrapWallet(cli, bootstrapData) {
             await cli.walletdApi('import-addresses', { addresses: privateAddresses });
         }
     } catch (e) {
-        console.error(`Failed to bootstrap wallet: ${e.message}`);
+        console.error(chalk.red(`Failed to bootstrap wallet: ${e.message}`));
     }
 }
 

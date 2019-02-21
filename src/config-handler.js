@@ -1,10 +1,12 @@
 const fs = require('fs'),
+    chalk = require('chalk'),
     path = require('path'),
     merge = require('deepmerge');
 
 const DEFAULT_CONFIG = require('./default-config.json');
 
 function getConfig({ configPath = '.', flagConfig = {} }) {
+    console.error(chalk.yellow('\nLoading Factom Dev Stack configuration...'));
     let userConfig = {};
     try {
         const configFilePath = getConfigFilePath(configPath);
