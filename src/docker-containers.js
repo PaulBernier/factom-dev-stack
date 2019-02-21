@@ -8,32 +8,52 @@ const WALLETD_CONTAINER_NAME = 'fds-walletd';
 async function startContainers(config) {
     console.error('Starting containers...');
 
-    const commands = [buildFactomdCommand(config.factomd), buildWalletdCommand(config.walletd)];
+
+    const persistVolume = await getPersistVolume(config);
+    const commands = [
+        buildFactomdCommand(config.factomd, persistVolume),
+        buildWalletdCommand(config.walletd, persistVolume)
+    ];
 
     await Promise.all(commands.map(c => exec(c)));
     console.error('factomd and factom-walletd instances running');
 }
 
-function buildFactomdCommand(factomd) {
-    let cmd = `docker run -d --rm --name "${FACTOMD_CONTAINER_NAME}" -p "8088:8088" -p "8090:8090" `;
+async function getPersistVolume(config) {
+    if (config.persist) {
+        const volumeName = `fds-${config.persist}`;
+        await exec(`docker volume create --name=${volumeName} --label factom-dev-stack=true`);
+        return ` -v "${volumeName}:/root/.factom"`;
+    }
+}
+
+function buildFactomdCommand(factomd, persistVolume) {
+    let cmd = `docker run -d --rm --name "${FACTOMD_CONTAINER_NAME}" -p "8088:8088" -p "8090:8090"`;
 
     if (factomd.conf) {
-        cmd += ` -v ${path.dirname(factomd.conf)}:/factomd-config `;
+        cmd += ` -v ${path.dirname(factomd.conf)}:/factomd-config:ro`;
+    }
+    if (persistVolume) {
+        cmd += persistVolume;
     }
 
-    cmd += `${factomd.image} -startdelay=0 -faulttimeout=0 -network=LOCAL`;
+    cmd += ` ${factomd.image} -startdelay=0 -faulttimeout=0 -network=LOCAL`;
     if (factomd.conf) {
         cmd += ` -config /factomd-config/${path.basename(factomd.conf)}`;
     }
     if (factomd.blockTime) {
         cmd += ` -blktime=${factomd.blockTime}`;
     }
-
     return cmd;
 }
 
-function buildWalletdCommand(walletd) {
-    let cmd = `docker run -d --rm --name "${WALLETD_CONTAINER_NAME}" -p "8089:8089" ${walletd.image}`;
+function buildWalletdCommand(walletd, persistVolume) {
+    let cmd = `docker run -d --rm --name "${WALLETD_CONTAINER_NAME}" -p "8089:8089"`;
+    if (persistVolume) {
+        cmd += persistVolume;
+    }
+    cmd += ` ${walletd.image}`;
+
     return cmd;
 }
 

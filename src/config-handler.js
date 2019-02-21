@@ -4,7 +4,7 @@ const fs = require('fs'),
 
 const DEFAULT_CONFIG = require('./default-config.json');
 
-async function getConfig(configPath) {
+function getConfig({ configPath = '.', flagConfig = {} }) {
     let userConfig = {};
     try {
         const configFilePath = getConfigFilePath(configPath);
@@ -18,7 +18,7 @@ async function getConfig(configPath) {
         }
     }
 
-    return merge(DEFAULT_CONFIG, userConfig);
+    return merge.all([DEFAULT_CONFIG, userConfig, flagConfig]);
 }
 
 function getConfigFilePath(configFilePath) {

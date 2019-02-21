@@ -12,16 +12,19 @@ exports.builder = function (yargs) {
     return yargs.option('config', {
         alias: 'c',
         type: 'string',
-        describe: 'Path to Factom dev stack config file',
+        describe: 'Path to a Factom dev stack config file',
         default: '.'
-
+    }).option('persist', {
+        alias: 'p',
+        type: 'string',
+        describe: 'Tag name of the persistence volume'
     });
 };
 
 exports.handler = async function (argv) {
 
     try {
-        await run(argv.config);
+        await run({ configPath: argv.config, flagConfig: flagConfig(argv) });
     } catch (e) {
         console.error(chalk.red(e.message));
         await stopContainers();
@@ -29,3 +32,8 @@ exports.handler = async function (argv) {
     }
 };
 
+function flagConfig(argv) {
+    return {
+        persist: argv.persist
+    };
+}

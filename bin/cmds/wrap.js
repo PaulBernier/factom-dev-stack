@@ -12,8 +12,12 @@ exports.builder = function (yargs) {
     return yargs.option('config', {
         alias: 'c',
         type: 'string',
-        describe: 'Path to Factom dev stack config file',
+        describe: 'Path to a Factom dev stack config file',
         default: '.'
+    }).option('persist', {
+        alias: 'p',
+        type: 'string',
+        describe: 'Tag name of the persistence volume'
     }).positional('command', {
         describe: 'Command to execute while Factom dev sack is running.'
     });
@@ -23,7 +27,8 @@ exports.handler = async function (argv) {
 
     let status = 0;
     try {
-        const bootstrapEnv = await run(argv.config);
+        const bootstrapEnv = await run({ configPath: argv.config, flagConfig: flagConfig(argv) });
+
         console.error();
         console.error('Running user command...');
 
@@ -41,3 +46,8 @@ exports.handler = async function (argv) {
     process.exit(status);
 };
 
+function flagConfig(argv) {
+    return {
+        persist: argv.persist
+    };
+}
