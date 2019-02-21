@@ -6,13 +6,22 @@ Currently Factom Dev Stack offers two main servives:
 * A way to start new *local* `factomd` and `factom-walletd` instances with a clean state.
 * A set of blockchain and wallet bootstrapping mechanisms.
 
-## Install
+## Installation
+
+### Global
 
 Factom Dev Stack requires [`docker`](https://docs.docker.com/install/) to be installed.
 
 ```bash
 $ npm install -g factom-dev-stack
 ```
+
+We recommend creating a shorter alias such as:
+```bash
+alias fds='factom-dev-stack'
+```
+
+### For JavaScript integration tests
 
 To use for integration testing in a JavaScript project using NPM:
 ```
