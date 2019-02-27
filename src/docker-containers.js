@@ -15,9 +15,15 @@ async function startContainers(config) {
         buildWalletdCommand(config.walletd, persistVolume)
     ];
 
+    await Promise.all([config.factomd.image, config.walletd.image].map(pullImage));
     await Promise.all(commands.map(c => exec(c)));
     console.error(`* factomd instance started (${chalk.blue(config.factomd.image)})`);
     console.error(`* factom-walletd instance started (${chalk.blue(config.walletd.image)})`);
+}
+
+async function pullImage(image) {
+    console.error(`* Pulling image ${chalk.blue(image)}`);
+    await exec(`docker pull ${image}`);
 }
 
 async function getPersistVolume(config) {

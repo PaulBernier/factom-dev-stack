@@ -11,6 +11,7 @@ function getConfig({ configPath = '.', flagConfig = {} }) {
     try {
         const configFilePath = getConfigFilePath(configPath);
         userConfig = JSON.parse(fs.readFileSync(configFilePath));
+        console.error(`* Loading ${configFilePath}`);
         resolveConfigPaths(configFilePath, userConfig);
     } catch (e) {
         if (e.code === 'ENOENT') {

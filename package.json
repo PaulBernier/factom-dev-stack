@@ -1,6 +1,6 @@
 {
     "name": "factom-dev-stack",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "Factom development stack",
     "bin": {
         "factom-dev-stack": "./bin/factom-dev-stack.js"
