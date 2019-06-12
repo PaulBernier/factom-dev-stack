@@ -28,10 +28,10 @@
     "dependencies": {
         "chalk": "^2.4.2",
         "deepmerge": "^3.2.0",
-        "factom": "1.0.0",
-        "yargs": "^13.2.1"
+        "factom": "1.2.3",
+        "yargs": "^13.2.4"
     },
     "devDependencies": {
-        "eslint": "^5.14.1"
+        "eslint": "^5.16.0"
     }
 }
