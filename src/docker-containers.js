@@ -35,7 +35,9 @@ async function getPersistVolume(config) {
 }
 
 function buildFactomdCommand(factomd, persistVolume) {
-    let cmd = `docker run -d --rm --name "${FACTOMD_CONTAINER_NAME}" -p "8088:8088" -p "8090:8090"`;
+    const hostApiPort = factomd.hostApiPort || 8088;
+    const hostCpPort = factomd.hostCpPort || 8090;
+    let cmd = `docker run -d --rm --name "${FACTOMD_CONTAINER_NAME}" -p "${hostApiPort}:8088" -p "${hostCpPort}:8090"`;
 
     if (factomd.conf) {
         cmd += ` -v ${path.dirname(factomd.conf)}:/factomd-config:ro`;

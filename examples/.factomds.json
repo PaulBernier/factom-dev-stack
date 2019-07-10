@@ -1,7 +1,9 @@
 {
     "factomd": {
         "conf": "factomd.conf",
-        "blockTime": 4
+        "blockTime": 4,
+        "hostApiPort": 6088,
+        "hostCpPort": 6090
     },
     "bootstrap": {
         "wallet": "wallet.json",
