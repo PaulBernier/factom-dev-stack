@@ -8,12 +8,16 @@ async function bootstrap(config) {
     console.error(chalk.yellow('\nBootstrapping...'));
 
     const env = {};
-    const cli = new FactomCli();
+    const cli = new FactomCli({ 
+        factomd: { port: config.factomd.apiPort },
+        walletd: { port: config.walletd.apiPort } 
+    });
     await waitFactomdApiReady(cli);
     await fdsBootStrap(cli);
-    if (typeof config === 'object') {
-        Object.assign(env, await userBootstrap(config, cli));
-        if (config.waitNewBlock) {
+    const bootstrapConfig = config.bootstrap;
+    if (typeof bootstrapConfig === 'object') {
+        Object.assign(env, await userBootstrap(bootstrapConfig, cli));
+        if (bootstrapConfig.waitNewBlock) {
             await waitNewBlock(cli);
         }
     }
@@ -22,7 +26,9 @@ async function bootstrap(config) {
 }
 
 async function fdsBootStrap(cli) {
-    await cli.walletdApi('import-addresses', { addresses: [{ secret: 'Fs3E9gV6DXsYzf7Fqx1fVBQPQXV695eP3k5XbmHEZVRLkMdD9qCK' }] });
+    await cli.walletdApi('import-addresses', {
+        addresses: [{ secret: 'Fs3E9gV6DXsYzf7Fqx1fVBQPQXV695eP3k5XbmHEZVRLkMdD9qCK' }]
+    });
 }
 
 async function waitNewBlock(cli) {
@@ -37,7 +43,12 @@ async function waitNewBlock(cli) {
 
 async function waitFactomdApiReady(cli) {
     console.error('* Waiting for APIs to be ready...');
-    while (await cli.factomdApi('properties').then(() => false).catch(() => true)) {
+    while (
+        await cli
+            .getBalance('FA2jK2HcLnRdS94dEcU27rF3meoJfpUcZPSinpb7AwQvPRY6RL1Q')
+            .then(b => b === 0)
+            .catch(() => true)
+    ) {
         await sleep(1000);
     }
 }
@@ -74,9 +85,14 @@ async function userBootstrap(config, cli) {
 
 async function bootstrapWallet(cli, bootstrapData) {
     try {
-        const data = typeof bootstrapData === 'string' ? JSON.parse(fs.readFileSync(bootstrapData)) : bootstrapData;
+        const data =
+            typeof bootstrapData === 'string'
+                ? JSON.parse(fs.readFileSync(bootstrapData))
+                : bootstrapData;
         if (Array.isArray(data)) {
-            const privateAddresses = data.filter(isValidPrivateAddress).map(sec => ({ secret: sec }));
+            const privateAddresses = data
+                .filter(isValidPrivateAddress)
+                .map(sec => ({ secret: sec }));
             await cli.walletdApi('import-addresses', { addresses: privateAddresses });
         }
     } catch (e) {

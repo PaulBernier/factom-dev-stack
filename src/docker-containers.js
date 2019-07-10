@@ -12,7 +12,7 @@ async function startContainers(config) {
     const persistVolume = await getPersistVolume(config);
     const commands = [
         buildFactomdCommand(config.factomd, persistVolume),
-        buildWalletdCommand(config.walletd, persistVolume)
+        buildWalletdCommand(config.walletd, config.factomd, persistVolume)
     ];
 
     await Promise.all([config.factomd.image, config.walletd.image].map(pullImage));
@@ -35,7 +35,9 @@ async function getPersistVolume(config) {
 }
 
 function buildFactomdCommand(factomd, persistVolume) {
-    let cmd = `docker run -d --rm --name "${FACTOMD_CONTAINER_NAME}" -p "8088:8088" -p "8090:8090"`;
+    const apiPort = factomd.apiPort;
+    const cpPort = factomd.controlPanelPort;
+    let cmd = `docker run -d --rm --name "${FACTOMD_CONTAINER_NAME}" -p "${apiPort}:${apiPort}" -p "${cpPort}:${cpPort}"`;
 
     if (factomd.conf) {
         cmd += ` -v ${path.dirname(factomd.conf)}:/factomd-config:ro`;
@@ -44,7 +46,7 @@ function buildFactomdCommand(factomd, persistVolume) {
         cmd += persistVolume;
     }
 
-    cmd += ` ${factomd.image} -startdelay=0 -faulttimeout=0 -network=LOCAL`;
+    cmd += ` ${factomd.image} -port=${apiPort} -controlpanelport=${cpPort} -startdelay=0 -faulttimeout=0 -network=LOCAL`;
     if (factomd.conf) {
         cmd += ` -config /factomd-config/${path.basename(factomd.conf)}`;
     }
@@ -54,12 +56,15 @@ function buildFactomdCommand(factomd, persistVolume) {
     return cmd;
 }
 
-function buildWalletdCommand(walletd, persistVolume) {
-    let cmd = `docker run -d --rm --name "${WALLETD_CONTAINER_NAME}" -p "8089:8089"`;
+function buildWalletdCommand(walletd, factomd, persistVolume) {
+    const apiPort = walletd.apiPort;
+    const factomdApiPort = factomd.apiPort;
+
+    let cmd = `docker run -d --rm --name "${WALLETD_CONTAINER_NAME}" -p "${apiPort}:${apiPort}"`;
     if (persistVolume) {
         cmd += persistVolume;
     }
-    cmd += ` ${walletd.image}`;
+    cmd += ` ${walletd.image} -p=${apiPort} -s=localhost:${factomdApiPort}`;
 
     return cmd;
 }
@@ -79,4 +84,3 @@ module.exports = {
     startContainers,
     stopContainers
 };
-

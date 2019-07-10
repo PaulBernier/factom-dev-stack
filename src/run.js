@@ -13,16 +13,16 @@ async function run(configs) {
 
     let env = {};
     if (sbs) {
-        env = await bootstrap(config.bootstrap);
+        env = await bootstrap(config);
     }
 
-    console.error(chalk.green('\nFactom Dev Start running.\n'));
+    console.error(chalk.green('\nFactom Dev Stack running.\n'));
     return env;
 }
 
 async function stop() {
     await stopContainers();
-    console.error(chalk.green('\nFactom Dev Start stopped.\n'));
+    console.error(chalk.green('\nFactom Dev Stack stopped.\n'));
 }
 
 async function shouldBootstrap(config) {

@@ -1,7 +1,12 @@
 {
     "factomd": {
         "conf": "factomd.conf",
-        "blockTime": 4
+        "blockTime": 4,
+        "apiPort": 5088,
+        "controlPanelPort": 5090
+    },
+    "walletd": {
+        "apiPort": 5089
     },
     "bootstrap": {
         "wallet": "wallet.json",

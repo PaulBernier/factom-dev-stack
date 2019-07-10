@@ -70,10 +70,13 @@ $ factom-dev-stack wrap -c examples/.factomds.json "factom-cli get chainhead 954
     "factomd": {
         "image": "factominc/factomd:v6.1.0-alpine",
         "conf": "factomd.conf",
-        "blockTime": 4
+        "blockTime": 4,
+        "apiPort": 8088,
+        "controlPanelPort": 8090
     },
     "walletd": {
-        "image": "factominc/factom-walletd:v2.2.14-alpine"
+        "image": "factominc/factom-walletd:v2.2.14-alpine",
+        "apiPort": 8089
     },
     "bootstrap": {
         "wallet": "wallet.json" OR ["Es4D1XXGBBJcWea54xDLMVYgobHzciXKfPSxoZNdsbdjxJftPM6Y"],

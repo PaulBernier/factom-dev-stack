@@ -1,8 +1,11 @@
 {
     "factomd": {
-        "image": "factominc/factomd:master-alpine"
+        "image": "factominc/factomd:master-alpine",
+        "apiPort": 8088,
+        "controlPanelPort": 8090
     },
     "walletd": {
-        "image": "factominc/factom-walletd:alpine"
+        "image": "factominc/factom-walletd:alpine",
+        "apiPort": 8089
     }
 }
