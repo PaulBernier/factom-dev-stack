@@ -8,9 +8,9 @@ async function bootstrap(config) {
     console.error(chalk.yellow('\nBootstrapping...'));
 
     const env = {};
-    const cli = new FactomCli({ 
+    const cli = new FactomCli({
         factomd: { port: config.factomd.apiPort },
-        walletd: { port: config.walletd.apiPort } 
+        walletd: { port: config.walletd.apiPort }
     });
     await waitFactomdApiReady(cli);
     await fdsBootStrap(cli);
@@ -27,17 +27,23 @@ async function bootstrap(config) {
 
 async function fdsBootStrap(cli) {
     await cli.walletdApi('import-addresses', {
-        addresses: [{ secret: 'Fs3E9gV6DXsYzf7Fqx1fVBQPQXV695eP3k5XbmHEZVRLkMdD9qCK' }]
+        addresses: [
+            { secret: 'Fs3E9gV6DXsYzf7Fqx1fVBQPQXV695eP3k5XbmHEZVRLkMdD9qCK' }
+        ]
     });
 }
 
 async function waitNewBlock(cli) {
     console.error('* Waiting for a new block before continuing...');
-    const referenceHeight = await cli.getHeights().then(r => r.directoryBlockHeight);
+    const referenceHeight = await cli
+        .getHeights()
+        .then(r => r.directoryBlockHeight);
     let currentHeight = referenceHeight;
     while (currentHeight <= referenceHeight) {
         await sleep(1000);
-        currentHeight = await cli.getHeights().then(r => r.directoryBlockHeight);
+        currentHeight = await cli
+            .getHeights()
+            .then(r => r.directoryBlockHeight);
     }
 }
 
@@ -93,7 +99,9 @@ async function bootstrapWallet(cli, bootstrapData) {
             const privateAddresses = data
                 .filter(isValidPrivateAddress)
                 .map(sec => ({ secret: sec }));
-            await cli.walletdApi('import-addresses', { addresses: privateAddresses });
+            await cli.walletdApi('import-addresses', {
+                addresses: privateAddresses
+            });
         }
     } catch (e) {
         console.error(chalk.red(`Failed to bootstrap wallet: ${e.message}`));

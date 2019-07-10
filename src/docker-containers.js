@@ -15,10 +15,18 @@ async function startContainers(config) {
         buildWalletdCommand(config.walletd, config.factomd, persistVolume)
     ];
 
-    await Promise.all([config.factomd.image, config.walletd.image].map(pullImage));
+    await Promise.all(
+        [config.factomd.image, config.walletd.image].map(pullImage)
+    );
     await Promise.all(commands.map(c => exec(c)));
-    console.error(`* factomd instance started (${chalk.blue(config.factomd.image)})`);
-    console.error(`* factom-walletd instance started (${chalk.blue(config.walletd.image)})`);
+    console.error(
+        `* factomd instance started (${chalk.blue(config.factomd.image)})`
+    );
+    console.error(
+        `* factom-walletd instance started (${chalk.blue(
+            config.walletd.image
+        )})`
+    );
 }
 
 async function pullImage(image) {
@@ -29,7 +37,9 @@ async function pullImage(image) {
 async function getPersistVolume(config) {
     if (config.persist) {
         const volumeName = `fds-${config.persist}`;
-        await exec(`docker volume create --name=${volumeName} --label factom-dev-stack=true`);
+        await exec(
+            `docker volume create --name=${volumeName} --label factom-dev-stack=true`
+        );
         return ` -v "${volumeName}:/root/.factom"`;
     }
 }
@@ -72,7 +82,10 @@ function buildWalletdCommand(walletd, factomd, persistVolume) {
 async function stopContainers() {
     console.error(chalk.yellow('\nStopping all services...'));
     try {
-        await Promise.all([exec('docker stop fds-factomd'), exec('docker stop fds-walletd')]);
+        await Promise.all([
+            exec('docker stop fds-factomd'),
+            exec('docker stop fds-walletd')
+        ]);
     } catch (e) {
         if (!e.message.includes('No such container')) {
             throw e;

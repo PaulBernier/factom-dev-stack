@@ -3,8 +3,9 @@
 Factom Dev Stack (FDS) is a simple tool to improve the speed and ease of developement of applications on Factom. One of its main use case (and the reason it was created) is integration testing.
 
 Currently Factom Dev Stack offers two main servives:
-* A way to start new *local* `factomd` and `factom-walletd` instances with a clean state.
-* A set of blockchain and wallet bootstrapping mechanisms.
+
+-   A way to start new _local_ `factomd` and `factom-walletd` instances with a clean state.
+-   A set of blockchain and wallet bootstrapping mechanisms.
 
 ## Installation
 
@@ -17,6 +18,7 @@ $ npm install -g factom-dev-stack
 ```
 
 We recommend creating a shorter alias such as:
+
 ```bash
 alias fds='factom-dev-stack'
 ```
@@ -24,10 +26,13 @@ alias fds='factom-dev-stack'
 ### For JavaScript integration tests
 
 To use for integration testing in a JavaScript project using NPM:
+
 ```
 $ npm install -D factom-dev-stack
 ```
+
 You can then use `factom-dev-stack` in your NPM test command for instance:
+
 ```javascript
 {
     ...
@@ -98,15 +103,17 @@ See the `examples` folder for a complete example of configuration.
 After launching an instance of `factomd` and `factom-walletd` FDS offers some mechanisms to bootstrap the blockchain and the wallet with your own data.
 
 Bootstrapping mechanisms are executed in the following order:
-* `wallet`: import the array of keys into walletd.
-* `script`: any executable script. If you want to use your existing Python script to bootstrap for instance.
-* `scriptjs`: a JavaScript script (see section below).
 
-The option `waitNewBlock` allows you to specify if, after bootstrapping, `factom-dev-stack` should directly return or wait for a new block to happen before returning. There are many cases when you would want your bootstrapped data to be confirmed in a block before starting your own processing. 
+-   `wallet`: import the array of keys into walletd.
+-   `script`: any executable script. If you want to use your existing Python script to bootstrap for instance.
+-   `scriptjs`: a JavaScript script (see section below).
+
+The option `waitNewBlock` allows you to specify if, after bootstrapping, `factom-dev-stack` should directly return or wait for a new block to happen before returning. There are many cases when you would want your bootstrapped data to be confirmed in a block before starting your own processing.
 
 ### JavaScript bootstrapping script
 
 The JavaScript bootstrapping script is the most powerful and flexible option to use. The script must export a function with this signature:
+
 ```javascript
 module.exports = function(cli, factomjs) {
 ...
@@ -116,7 +123,7 @@ module.exports = function(cli, factomjs) {
 The first argument injected is an instance of `FactomCli` that connects to local `factomd` and `factom-walletd` instances. The second argument injected is the [`factom`](https://www.npmjs.com/package/factom) NPM module. Thanks to object destructuring you can get directly what you need from the `factom` module, for instance:
 
 ```javascript
-module.exports = async function (cli, { Chain, Entry }) {
+module.exports = async function(cli, { Chain, Entry }) {
     const entry = Entry.builder()
         .extId('test', 'utf8')
         .content('hello', 'utf8')
@@ -133,7 +140,7 @@ The JS bootstrapping script has an other benefit when using the `wrap` command: 
 
 By default FDS creates ephemeral Factom blockchains and wallets: they will be thrown away after calling `factom-dev-stack stop`. As the first use case for FDS was integration testing this is a desirable behavior to always start with a fresh setup at every run. This can also help to not fill your disk space over time by re-using an ever growing blockchain.
 
-There are still cases a developer would want to re-use the same blockchain over time. FDS offers a *persist* option that allows to persist both the Factom blockchain and the walletd storage in a Docker volume. You can do so by using the `-p` flag of the CLI or by adding a `persist` key in your config JSON. The option takes a tag name that identifies a specific persisting volume. For instance you could have one persistence tag name per project, effectively having separate blockchains and wallets for each of your projects.
+There are still cases a developer would want to re-use the same blockchain over time. FDS offers a _persist_ option that allows to persist both the Factom blockchain and the walletd storage in a Docker volume. You can do so by using the `-p` flag of the CLI or by adding a `persist` key in your config JSON. The option takes a tag name that identifies a specific persisting volume. For instance you could have one persistence tag name per project, effectively having separate blockchains and wallets for each of your projects.
 
 **When using the persistence mode the bootstrapping step will only occur during the first run for a given tag name.**
 
