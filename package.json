@@ -1,6 +1,6 @@
 {
     "name": "factom-dev-stack",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "Factom development stack",
     "bin": {
         "factom-dev-stack": "./bin/factom-dev-stack.js"
@@ -8,7 +8,7 @@
     "scripts": {
         "format": "prettier --write \"src/**/*.js\" README.md",
         "lint": "eslint src/ bin/",
-        "prepublishOnly": "npm run lint"
+        "prepublishOnly": "npm run format && npm run lint"
     },
     "repository": {
         "type": "git",
